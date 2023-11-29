@@ -14,7 +14,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        MySolver solver = new MySolver();
+        BackTrackingSolver solver = new BackTrackingSolver();
         solver.solve(board);
         printBoard();
 
