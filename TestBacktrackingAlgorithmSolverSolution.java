@@ -1,5 +1,6 @@
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class TestBacktrackingAlgorithmSolverSolution {
 
@@ -9,12 +10,12 @@ class TestBacktrackingAlgorithmSolverSolution {
     @Test
     void testValidSolution() {
         // Given
-        Assert.assertFalse(solver.isValidSolution(BOARD));
+        assertFalse(solver.isValidSolution(BOARD));
     }
 
 
     @Test
-    void testValidRow() {
+    void testValidRowOrColumn() {
         int[] validRow = { 8, 1, 2, 3, 4, 5, 6, 7, 9 };
         int[] invalidRowDuplicateValue = { 8, 9, 2, 3, 4, 5, 6, 7, 9 };
         int[] invalidRowWithInvalidValue = { 8, 13, 2, 3, 4, 5, 6, 7, 9 };
@@ -22,11 +23,28 @@ class TestBacktrackingAlgorithmSolverSolution {
         int[] invalidRowWithFittingDuplicateValue = { 8, 1, 1, 4, 4, 5, 6, 7, 9 };
         int[] invalidRowWithNumbersAboveLimitFitting = { 8, 1, 2, 3, 4, 5, 6, 0, 16 };
 
-        Assert.assertTrue(solver.isValidRow(validRow));
-        Assert.assertFalse(solver.isValidRow(invalidRowDuplicateValue));
-        Assert.assertFalse(solver.isValidRow(invalidRowWithInvalidValue));
-        Assert.assertFalse(solver.isValidRow(invalidRowWithZeroValue));
-        Assert.assertFalse(solver.isValidRow(invalidRowWithFittingDuplicateValue));
-        Assert.assertFalse(solver.isValidRow(invalidRowWithNumbersAboveLimitFitting));
+        assertTrue(solver.isValidRow(validRow));
+        assertFalse(solver.isValidRow(invalidRowDuplicateValue));
+        assertFalse(solver.isValidRow(invalidRowWithInvalidValue));
+        assertFalse(solver.isValidRow(invalidRowWithZeroValue));
+        assertFalse(solver.isValidRow(invalidRowWithFittingDuplicateValue));
+        assertFalse(solver.isValidRow(invalidRowWithNumbersAboveLimitFitting));
+    }
+
+
+    /**
+     * Every 3 rows + 3 column is a block
+     */
+    @Test
+    void testGetBlock() {
+        final int[][] expected =
+                {{8, 0, 0, 0, 0, 3, 0, 7, 0}, { 0, 0, 0,  6, 0, 0, 0, 9, 0},
+                { 0, 0, 0, 0, 0, 0, 2, 0, 0 }, {0, 5, 0, 0, 0, 0, 0,  0, 0, 0},
+                        {0, 0, 7, 0, 4, 5, 1, 0, 0}, {0, 0, 0,  7, 0, 0, 0, 3, 0},
+                        {0, 0, 1, 0, 0, 8, 0, 9, 0 }, {0, 0, 0, 5, 0, 0, 0, 0, 0 }, {0, 6, 8, 0, 1, 0, 4, 0, 0}};
+
+        final int[][] result = solver.getBlocks(BOARD);
+
+        assertArrayEquals(expected, result);
     }
 }
