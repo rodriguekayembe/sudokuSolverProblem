@@ -1,3 +1,4 @@
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -54,4 +55,28 @@ class TestBacktrackingAlgorithmSolverSolution {
         assertTrue(solver.isAvailable(BOARD, validLocation));
     }
 
+
+    @Test
+    void getColumn() {
+        assertArrayEquals(solver.getColumn(BOARD, 2), new int[]{0, 3, 0, 0, 0, 0, 1, 8, 0});
+    }
+
+    @Test
+    void isValidEntry() {
+        final int[] unavailableCell = {0, 0};
+        for (int input = 0; input < 9; input++) {
+            assertFalse(solver.validateEntry(BOARD, unavailableCell, input));
+        }
+
+        final int[] availableCell = {0, 1};
+        assertTrue(solver.validateEntry(BOARD, availableCell, 1));
+        assertTrue(solver.validateEntry(BOARD, availableCell, 2));
+        assertFalse(solver.validateEntry(BOARD, availableCell, 3));
+        assertTrue(solver.validateEntry(BOARD, availableCell, 4));
+        assertFalse(solver.validateEntry(BOARD, availableCell, 5));
+        assertTrue(solver.validateEntry(BOARD, availableCell, 6));
+        assertFalse(solver.validateEntry(BOARD, availableCell, 7));
+        assertFalse(solver.validateEntry(BOARD, availableCell, 8));
+        assertFalse(solver.validateEntry(BOARD, availableCell, 9));
+    }
 }

@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 /**
  *  Write a backtracking algorithm to solve a sudoku board.
@@ -53,5 +54,38 @@ public class BackTrackingSolver implements SudokuSolver {
 
     public boolean isAvailable(int[][] board, int[] location) {
         return board[location[0]][location[1]] == 0;
+    }
+
+    public boolean validateEntry(int[][] board, int[] cell, int input) {
+        final int[] row = board[cell[0]];
+        final int[] column = getColumn(board, cell[1]);
+        final int blockIndex = cell[0] / 3 * 3 + cell[1] / 3;
+        final boolean blockContainsNumber = blockContainsNumber(getBlocks(board), blockIndex, input);
+
+        final boolean noneMatchRow = Arrays.stream(row).noneMatch(x -> x == input);
+        final boolean noneMatchColumn= Arrays.stream(column).noneMatch(x -> x == input);
+
+        return isAvailable(board, cell) && noneMatchRow && noneMatchColumn && !blockContainsNumber;
+    }
+
+    public int[] getColumn(int[][] board, int columnNumber) {
+        int[] result = new int[9];
+        for (int i = 0; i < board.length; i++) {
+                result[i] = board[i][columnNumber];
+            }
+        return result;
+    }
+
+
+    private boolean blockContainsNumber(int[][][] blocks, int blockIndex, int number) {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (blocks[blockIndex][i][j] == number) {
+                    return true; // Number exists in the block
+                }
+            }
+        }
+
+        return false; // Number doesn't exist in the block
     }
 }
