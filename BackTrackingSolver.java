@@ -1,5 +1,4 @@
 import java.util.Arrays;
-import java.util.stream.Collectors;
 
 /**
  *  Write a backtracking algorithm to solve a sudoku board.
@@ -11,28 +10,75 @@ import java.util.stream.Collectors;
 public class BackTrackingSolver implements SudokuSolver {
 
     @Override
-    public void solve(int[][] board) {
+    public int[][] solve(int[][] board) {
+        if (isValidSolution(board)) return board;
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                if (board[i][j] == 0) { // Check for an empty cell
+                    for (int k = 1; k <= 9; k++) {
+                        if (isValidEntry(board, i, j, k)) {
+                            board[i][j] = k; // Place a valid value
 
+                            int[][] result = solve(board); // Recursive call
+
+                            if (isValidSolution(result)) {
+                                return result; // Return the solved board
+                            } else {
+                                board[i][j] = 0; // Backtrack if solution is invalid
+                            }
+                        }
+                    }
+                    return board; // Backtrack to the previous state
+                }
+            }
+        }
+
+        return board;
     }
 
 
-    /**
-     * A valid solution is one where every cell has a number between 1-9
-     * Rows has the number 1 to 9 once
-     * Column has the number 1 to 9 once
-     * No block of 3*3 has a duplicate and has all the numbers 1 to 9
-     *
-     * @param board
-     * @return boolean
-     */
-    @Override
     public boolean isValidSolution(int[][] board) {
-        return false;
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                if (board[i][j] == 0) {
+                    return false; // Ensure no cell contains a zero
+                }
+                // Check if the current cell value violates constraints
+                if (!isValidEntry(board, i, j, board[i][j])) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
+    public boolean isValidEntry(int[][] board, int row, int col, int value) {
+        // Check row constraint
+        for (int i = 0; i < board.length; i++) {
+            if (i != col && board[row][i] == value) {
+                return false;
+            }
+        }
 
-    public boolean isValidRow(int[] row) {
-        return Arrays.stream(row).distinct().filter(i -> i > 0 && i <= 9).sum() == 45;
+        // Check column constraint
+        for (int i = 0; i < board.length; i++) {
+            if (i != row && board[i][col] == value) {
+                return false;
+            }
+        }
+
+        // Check 3x3 block constraint
+        int blockStartRow = (row / 3) * 3;
+        int blockStartCol = (col / 3) * 3;
+        for (int i = blockStartRow; i < blockStartRow + 3; i++) {
+            for (int j = blockStartCol; j < blockStartCol + 3; j++) {
+                if (i != row && j != col && board[i][j] == value) {
+                    return false;
+                }
+            }
+        }
+
+        return true; // Cell value satisfies all constraints
     }
 
     public int[][][] getBlocks(int[][] board) {
@@ -56,17 +102,6 @@ public class BackTrackingSolver implements SudokuSolver {
         return board[location[0]][location[1]] == 0;
     }
 
-    public boolean validateEntry(int[][] board, int[] cell, int input) {
-        final int[] row = board[cell[0]];
-        final int[] column = getColumn(board, cell[1]);
-        final int blockIndex = cell[0] / 3 * 3 + cell[1] / 3;
-        final boolean blockContainsNumber = blockContainsNumber(getBlocks(board), blockIndex, input);
-
-        final boolean noneMatchRow = Arrays.stream(row).noneMatch(x -> x == input);
-        final boolean noneMatchColumn= Arrays.stream(column).noneMatch(x -> x == input);
-
-        return isAvailable(board, cell) && noneMatchRow && noneMatchColumn && !blockContainsNumber;
-    }
 
     public int[] getColumn(int[][] board, int columnNumber) {
         int[] result = new int[9];
@@ -74,18 +109,5 @@ public class BackTrackingSolver implements SudokuSolver {
                 result[i] = board[i][columnNumber];
             }
         return result;
-    }
-
-
-    private boolean blockContainsNumber(int[][][] blocks, int blockIndex, int number) {
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (blocks[blockIndex][i][j] == number) {
-                    return true; // Number exists in the block
-                }
-            }
-        }
-
-        return false; // Number doesn't exist in the block
     }
 }

@@ -17,7 +17,6 @@ public class Main {
         BackTrackingSolver solver = new BackTrackingSolver();
         solver.solve(board);
         printBoard();
-
     }
 
     private static void printBoard() {

@@ -1,6 +1,6 @@
 public interface SudokuSolver {
 
-    void solve(int[][] board);
+    int[][] solve(int[][] board);
 
     boolean isValidSolution(int[][] board);
 }
