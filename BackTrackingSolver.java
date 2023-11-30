@@ -50,4 +50,8 @@ public class BackTrackingSolver implements SudokuSolver {
 
         return blocks;
     }
+
+    public boolean isAvailable(int[][] board, int[] location) {
+        return board[location[0]][location[1]] == 0;
+    }
 }

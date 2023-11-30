@@ -45,4 +45,13 @@ class TestBacktrackingAlgorithmSolverSolution {
 
         assertArrayEquals(expected, solver.getBlocks(BOARD));
     }
+
+    @Test
+    void testAvailable() {
+        int[] invalidLocation = new int[]{0, 0};
+        int[] validLocation = new int[]{0, 1};
+        assertFalse(solver.isAvailable(BOARD, invalidLocation));
+        assertTrue(solver.isAvailable(BOARD, validLocation));
+    }
+
 }
