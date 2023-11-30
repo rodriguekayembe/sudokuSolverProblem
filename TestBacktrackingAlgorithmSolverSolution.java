@@ -33,18 +33,16 @@ class TestBacktrackingAlgorithmSolverSolution {
 
 
     /**
-     * Every 3 rows + 3 column is a block
+     * 9 blocks of 3 * 3
      */
     @Test
     void testGetBlock() {
-        final int[][] expected =
-                {{8, 0, 0, 0, 0, 3, 0, 7, 0}, { 0, 0, 0,  6, 0, 0, 0, 9, 0},
-                { 0, 0, 0, 0, 0, 0, 2, 0, 0 }, {0, 5, 0, 0, 0, 0, 0,  0, 0, 0},
-                        {0, 0, 7, 0, 4, 5, 1, 0, 0}, {0, 0, 0,  7, 0, 0, 0, 3, 0},
-                        {0, 0, 1, 0, 0, 8, 0, 9, 0 }, {0, 0, 0, 5, 0, 0, 0, 0, 0 }, {0, 6, 8, 0, 1, 0, 4, 0, 0}};
+        final int[][][] expected =
+                {{{8, 0, 0},{0, 0, 3}, {0, 7, 0}}, {{0, 0, 0}, {6, 0, 0}, {0, 9, 0}},
+                {{0, 0, 0}, {0, 0, 0},  {2, 0, 0}}, {{0, 5, 0}, {0, 0, 0}, {0,  0, 0}},
+                        {{0, 0, 7}, {0, 4, 5}, {1, 0, 0}}, {{0, 0, 0}, {7, 0, 0}, {0, 3, 0}},
+                        {{0, 0, 1}, {0, 0, 8}, {0, 9, 0}}, {{0, 0, 0},  {5, 0, 0}, {0, 0, 0 }}, {{0, 6, 8}, {0, 1, 0}, {4, 0, 0}}};
 
-        final int[][] result = solver.getBlocks(BOARD);
-
-        assertArrayEquals(expected, result);
+        assertArrayEquals(expected, solver.getBlocks(BOARD));
     }
 }

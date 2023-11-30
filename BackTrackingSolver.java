@@ -34,7 +34,20 @@ public class BackTrackingSolver implements SudokuSolver {
         return Arrays.stream(row).distinct().filter(i -> i > 0 && i <= 9).sum() == 45;
     }
 
-    public int[][] getBlocks(int[][] board) {
-        return new int[][] {{}};
+    public int[][][] getBlocks(int[][] board) {
+        int[][][] blocks = new int[9][3][3];
+
+        for (int block = 0; block < 9; block++) {
+            int rowOffset = (block / 3) * 3;
+            int colOffset = (block % 3) * 3;
+
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    blocks[block][i][j] = board[rowOffset + i][colOffset + j];
+                }
+            }
+        }
+
+        return blocks;
     }
 }
